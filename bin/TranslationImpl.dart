@@ -5,24 +5,6 @@ import 'package:dio/dio.dart';
 class TranslationImpl implements GoogleTranslation {
   String tkk;
   final String urlGoogleTTs = 'https://translate.google.cn/translate_tts';
-  final headerTTs = {
-    "authority": "translate.google.cn",
-    "method": "GET",
-    "scheme": "https",
-    "accept-encoding": "identity;q=1, *;q=0",
-    "sec-fetch-site": "same-origin",
-    "sec-fetch-mode": "no-cors",
-    "range": "bytes=0-",
-    "sec-fetch-dest": "audio",
-    "accept-language": "en-US,en;q=0.9",
-    "cookie":
-        "N_ga=GA1.3.2053936754.1594434963; _gid=GA1.3.768876225.1594434963; NID=204=L-CDmBoC3iL5vcNjeeaUs1Vl9V9BNIfXck5S_ixqsY9AgTU4hsKDcCc1eq19zu5m8SL-m_GK1uERxJi43SMPKgj_BZDDsYkukrCWFkofcLRWdSyiBJcUCkT1vvGXfJ8seI5JGaje_mrVEzgotPfktSSCGtV2Xc2YMG1pbksmUXM; 1P_JAR=2020-7-11-5",
-    "referer": "https://translate.google.cn/",
-    "user-agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36",
-    "x-client-data":
-        "CIu2yQEIo7bJAQjEtskBCImSygEIqZ3KAQj/vMoBCJrHygEI6MjKARj7t8oBGJu+ygE=",
-  };
 
   final data = {
     "client": "webapp", // 基于网页访问服务器
@@ -76,13 +58,8 @@ class TranslationImpl implements GoogleTranslation {
     data['textlen'] = encodeTxt.length.toString();
     print("encode content:" + encodeTxt);
     String url = constructUrl();
-    var client = http.Client();
-    http.BaseRequest request = http.Request("GET", Uri.parse(url));
-    request.headers.addAll(headerTTs);
-    request.headers['Accept'] = "text/event-stream";
-//    Future<http.StreamedResponse> audioResponse = client.send(request);
 
-    await Dio().download(url, filePath/*, options: Options(headers: headerTTs)*/);
+    await Dio().download(url, filePath);
   }
 
 
@@ -90,11 +67,7 @@ class TranslationImpl implements GoogleTranslation {
   String constructUrl() {
     String base = this.urlGoogleTTs + '?';
     for ( String key in data.keys) {
-//      if(data[key].runtimeType is List) {
-//        base = base + "dt=" + "&dt=".join(data[key]) + "&";
-//      } else {
         base = base + key + '=' + data[key] + '&';
-//      }
     }
     base = base.substring(0, base.length-1);
     print("constructUrl, result:" + base);
@@ -179,4 +152,5 @@ class TranslationImpl implements GoogleTranslation {
     }
     return a;
   }
+
 }

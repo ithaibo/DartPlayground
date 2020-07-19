@@ -6,9 +6,6 @@ import 'TextSplitStrategy.dart';
 import 'TranslationImpl.dart';
 
 void main() {
-  String toSplit =
-      'As Honda Soichiro built his company into a global car making giant, he developed a reputation as a talented engineer. He was also known to be an exacting boss, even a violent one." When he got mad, he started throwing whatever was in reach randomly at people, " one former executive later recalled. Such fiery tempers remain all too common among Japanese managers. A Japanese psychologist even coined a term to describe the particular abuse that the country’s supervisors pile upon some of their employees: pawahara, or power harassment.';
-
   TranslationImpl translation = TranslationImpl();
   print("prepareToken invoked");
 
@@ -32,8 +29,6 @@ void main() {
 
     readConfigAndSplitLines(translation);
   });
-
-//  readConfigAndSplitLines();
 }
 
 void readConfigAndSplitLines(GoogleTranslation translation) {
@@ -50,20 +45,4 @@ void readConfigAndSplitLines(GoogleTranslation translation) {
     }
     print("size:" + listToFetch.length.toString());
   });
-}
-
-void fetchPrintBaidu() {
-  var url = "http://www.baidu.com";
-  fetchUrl(url).then((body) {
-    print("body of baidu:" + body);
-  }).catchError((error) => {print(error.toString())});
-}
-
-Future<String> fetchUrl(String url) async {
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    return response.body;
-  } else {
-    throw Exception('Failed to load baidu.');
-  }
 }
