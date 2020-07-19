@@ -1,0 +1,10 @@
+name: BasicPlayground
+version: 0.0.1
+description: A sample command-line application
+
+dependencies:
+  http: ^0.12.2
+  dio: ^3.0.9
+
+dev_dependencies:
+#  unittest: any
