@@ -26,7 +26,7 @@ class TranslationImpl implements GoogleTranslation {
     throw Exception("Failed to load token");
   }
 
-  void prepareToken() {
+  void prepareToken() async {
     print("prepareToken invoked");
 
     var url = "https://translate.google.cn/";
@@ -42,11 +42,10 @@ class TranslationImpl implements GoogleTranslation {
           "CIu2yQEIo7bJAQjEtskBCImSygEIqZ3KAQj/vMoBCJrHygEI6MjKARj7t8oBGJu+ygE=",
     };
 
-    doNetWork(url, header).then((String value) {
-      RegExp regExp = RegExp("tkk:'([0-9]+\.[0-9]+)'");
-      this.tkk = regExp.firstMatch(value).group(0);
-      print("tkk from google" + tkk);
-    });
+    String result = await doNetWork(url, header);
+    RegExp regExp = RegExp("tkk:'([0-9]+\.[0-9]+)'");
+    this.tkk = regExp.firstMatch(result).group(0);
+    print("tkk from google" + tkk);
   }
 
   @override
