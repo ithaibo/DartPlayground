@@ -142,7 +142,6 @@ class TranslationImpl implements GoogleTranslation {
 
   int zp(int a, String b) {
     int g = 0;
-    String s;
     int i = 0;
     while (i < (b.length - 2)) {
       String c = "" + b[i + 2];
