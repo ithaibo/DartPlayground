@@ -17,11 +17,15 @@ void readConfigAndSplitLines(GoogleTranslation translation) {
     for (String line in lines) {
       listToFetch.addAll(strategy.split(line));
     }
+    List<Future<bool>> fetchTaskList = [];
     for (int i = 0; i < listToFetch.length; i++) {
-      translation.fetchTTSAudio(
-          listToFetch[i],
-          "output/" + i.toString() + ".mp3");
+      fetchTaskList.add(translation.fetchTTSAudio(listToFetch[i], "output/" + i.toString() + ".mp3"));
     }
+
+    Future.wait<bool>(fetchTaskList).then((value){
+      print("result:" + value.toString());
+    });
+
     print("size:" + listToFetch.length.toString());
   });
 }

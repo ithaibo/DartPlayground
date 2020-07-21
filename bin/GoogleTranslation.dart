@@ -1,4 +1,4 @@
 
 abstract class GoogleTranslation {
-  void fetchTTSAudio(String content, String filePath);
+  Future<bool> fetchTTSAudio(String content, String filePath);
 }

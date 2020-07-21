@@ -49,7 +49,7 @@ class TranslationImpl implements GoogleTranslation {
   }
 
   @override
-  void fetchTTSAudio(String content, String filePath) async {
+  Future<bool> fetchTTSAudio(String content, String filePath) async {
     String encodeTxt = Uri.encodeFull(content);
     data['q'] = encodeTxt;
     String token = getToken(content, tkk);
@@ -58,23 +58,28 @@ class TranslationImpl implements GoogleTranslation {
     print("encode content:" + encodeTxt);
     String url = constructUrl();
 
-    await Dio().download(url, filePath);
+    try {
+      await Dio().download(url, filePath);
+      return true;
+    } on Exception catch(e) {
+      print(e.toString());
+      return false;
+    }
   }
-
-
 
   String constructUrl() {
     String base = this.urlGoogleTTs + '?';
-    for ( String key in data.keys) {
-        base = base + key + '=' + data[key] + '&';
+    for (String key in data.keys) {
+      base = base + key + '=' + data[key] + '&';
     }
-    base = base.substring(0, base.length-1);
+    base = base.substring(0, base.length - 1);
     print("constructUrl, result:" + base);
     return base;
   }
 
   String getToken(String content, String tkk) {
-    List<String> array = tkk.replaceAll("tkk:", "").replaceAll("'", "").split(".");
+    List<String> array =
+        tkk.replaceAll("tkk:", "").replaceAll("'", "").split(".");
     print("getToken invoked, array: " + array.toString());
     print("getToken invoked, array[0]: " + array[0]);
     print("getToken invoked, array[1]: " + array[1]);
@@ -118,7 +123,7 @@ class TranslationImpl implements GoogleTranslation {
 
     int a = tkk1;
 
-    for(int i = 0; i < f.length; i++) {
+    for (int i = 0; i < f.length; i++) {
       a += f[i];
       a = zp(a, "+-a^+6");
     }
@@ -126,7 +131,7 @@ class TranslationImpl implements GoogleTranslation {
     a = zp(a, "+-3^+b+-f");
     a ^= tkk2;
 
-    if(0 > a) {
+    if (0 > a) {
       a = (a & 2147483647) + 2147483648;
     }
 
@@ -142,14 +147,15 @@ class TranslationImpl implements GoogleTranslation {
     while (i < (b.length - 2)) {
       String c = "" + b[i + 2];
       String d = b[i + 2];
-      g = ("a".codeUnitAt(0) <= d.codeUnitAt(0))? (c.codeUnitAt(0)) - 87 : int.parse(c); //int.parse(c)
+      g = ("a".codeUnitAt(0) <= d.codeUnitAt(0))
+          ? (c.codeUnitAt(0)) - 87
+          : int.parse(c); //int.parse(c)
       String x = "" + b[i + 1];
-      g = "+" == x? a >> g : a << g;
+      g = "+" == x ? a >> g : a << g;
       String y = "" + b[i];
-      a = "+" == y? (a + g & 4294967295) : (a ^ g);
+      a = "+" == y ? (a + g & 4294967295) : (a ^ g);
       i = i + 3;
     }
     return a;
   }
-
 }
